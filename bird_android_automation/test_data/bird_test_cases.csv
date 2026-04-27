@@ -1,0 +1,6 @@
+test_id,image_name,expected_species,image_type,augmentation
+TC001,rock_pigeon_1.jpg,rock_pigeon,original,none
+TC002,house_sparrow_1.jpg,house_sparrow,original,none
+TC003,american_crow_1.jpg,american_crow,original,none
+TC004,scarlet_macaw_1.jpg,scarlet_macaw,original,none
+TC005,bald_eagle_1.jpg,bald_eagle,original,none

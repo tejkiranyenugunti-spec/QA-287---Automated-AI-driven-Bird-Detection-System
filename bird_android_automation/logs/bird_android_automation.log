@@ -1,0 +1,408 @@
+2026-04-26 19:48:11,914 | INFO | app_driver | Starting Appium driver with device config: {'platformName': 'Android', 'platformVersion': '14', 'deviceName': 'Pixel_6_API_34', 'udid': 'emulator-5554', 'automationName': 'UiAutomator2', 'appPackage': 'com.labs.merlinbirdid.app', 'appActivity': 'com.labs.merlinbirdid.app.activity.MainActivity', 'noReset': True, 'fullReset': False, 'autoGrantPermissions': True, 'newCommandTimeout': 300}
+2026-04-26 19:48:11,916 | ERROR | app_driver | Failed to start Appium driver.
+Traceback (most recent call last):
+  File "/Users/tejkiranyenugunti/Desktop/QA 287 project/bird_augmentation/.venv/lib/python3.14/site-packages/urllib3/connection.py", line 204, in _new_conn
+    sock = connection.create_connection(
+        (self._dns_host, self.port),
+    ...<2 lines>...
+        socket_options=self.socket_options,
+    )
+  File "/Users/tejkiranyenugunti/Desktop/QA 287 project/bird_augmentation/.venv/lib/python3.14/site-packages/urllib3/util/connection.py", line 85, in create_connection
+    raise err
+  File "/Users/tejkiranyenugunti/Desktop/QA 287 project/bird_augmentation/.venv/lib/python3.14/site-packages/urllib3/util/connection.py", line 73, in create_connection
+    sock.connect(sa)
+    ~~~~~~~~~~~~^^^^
+ConnectionRefusedError: [Errno 61] Connection refused
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/tejkiranyenugunti/Desktop/QA 287 project/bird_augmentation/.venv/lib/python3.14/site-packages/urllib3/connectionpool.py", line 787, in urlopen
+    response = self._make_request(
+        conn,
+    ...<10 lines>...
+        **response_kw,
+    )
+  File "/Users/tejkiranyenugunti/Desktop/QA 287 project/bird_augmentation/.venv/lib/python3.14/site-packages/urllib3/connectionpool.py", line 493, in _make_request
+    conn.request(
+    ~~~~~~~~~~~~^
+        method,
+        ^^^^^^^
+    ...<6 lines>...
+        enforce_content_length=enforce_content_length,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/tejkiranyenugunti/Desktop/QA 287 project/bird_augmentation/.venv/lib/python3.14/site-packages/urllib3/connection.py", line 500, in request
+    self.endheaders()
+    ~~~~~~~~~~~~~~~^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.2/Frameworks/Python.framework/Versions/3.14/lib/python3.14/http/client.py", line 1353, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.2/Frameworks/Python.framework/Versions/3.14/lib/python3.14/http/client.py", line 1113, in _send_output
+    self.send(msg)
+    ~~~~~~~~~^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.2/Frameworks/Python.framework/Versions/3.14/lib/python3.14/http/client.py", line 1057, in send
+    self.connect()
+    ~~~~~~~~~~~~^^
+  File "/Users/tejkiranyenugunti/Desktop/QA 287 project/bird_augmentation/.venv/lib/python3.14/site-packages/urllib3/connection.py", line 331, in connect
+    self.sock = self._new_conn()
+                ~~~~~~~~~~~~~~^^
+  File "/Users/tejkiranyenugunti/Desktop/QA 287 project/bird_augmentation/.venv/lib/python3.14/site-packages/urllib3/connection.py", line 219, in _new_conn
+    raise NewConnectionError(
+        self, f"Failed to establish a new connection: {e}"
+    ) from e
+urllib3.exceptions.NewConnectionError: HTTPConnection(host='127.0.0.1', port=4723): Failed to establish a new connection: [Errno 61] Connection refused
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/tejkiranyenugunti/Desktop/QA 287 project/bird_android_automation/app_driver.py", line 61, in start_driver
+    self.driver = webdriver.Remote(command_executor=APPIUM_SERVER_URL, options=options)
+                  ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/tejkiranyenugunti/Desktop/QA 287 project/bird_augmentation/.venv/lib/python3.14/site-packages/appium/webdriver/webdriver.py", line 251, in __init__
+    super().__init__(
+    ~~~~~~~~~~~~~~~~^
+        command_executor=command_executor,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+        client_config=client_config,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/tejkiranyenugunti/Desktop/QA 287 project/bird_augmentation/.venv/lib/python3.14/site-packages/selenium/webdriver/remote/webdriver.py", line 274, in __init__
+    self.start_session(capabilities)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "/Users/tejkiranyenugunti/Desktop/QA 287 project/bird_augmentation/.venv/lib/python3.14/site-packages/appium/webdriver/webdriver.py", line 345, in start_session
+    response = self.execute(RemoteCommand.NEW_SESSION, w3c_caps)
+  File "/Users/tejkiranyenugunti/Desktop/QA 287 project/bird_augmentation/.venv/lib/python3.14/site-packages/selenium/webdriver/remote/webdriver.py", line 447, in execute
+    response = cast(RemoteConnection, self.command_executor).execute(driver_command, params)
+  File "/Users/tejkiranyenugunti/Desktop/QA 287 project/bird_augmentation/.venv/lib/python3.14/site-packages/selenium/webdriver/remote/remote_connection.py", line 407, in execute
+    return self._request(command_info[0], url, body=data)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/tejkiranyenugunti/Desktop/QA 287 project/bird_augmentation/.venv/lib/python3.14/site-packages/selenium/webdriver/remote/remote_connection.py", line 431, in _request
+    response = self._conn.request(method, url, body=body, headers=headers, timeout=self._client_config.timeout)
+  File "/Users/tejkiranyenugunti/Desktop/QA 287 project/bird_augmentation/.venv/lib/python3.14/site-packages/urllib3/_request_methods.py", line 143, in request
+    return self.request_encode_body(
+           ~~~~~~~~~~~~~~~~~~~~~~~~^
+        method, url, fields=fields, headers=headers, **urlopen_kw
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/tejkiranyenugunti/Desktop/QA 287 project/bird_augmentation/.venv/lib/python3.14/site-packages/urllib3/_request_methods.py", line 278, in request_encode_body
+    return self.urlopen(method, url, **extra_kw)
+           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/tejkiranyenugunti/Desktop/QA 287 project/bird_augmentation/.venv/lib/python3.14/site-packages/urllib3/poolmanager.py", line 457, in urlopen
+    response = conn.urlopen(method, u.request_uri, **kw)
+  File "/Users/tejkiranyenugunti/Desktop/QA 287 project/bird_augmentation/.venv/lib/python3.14/site-packages/urllib3/connectionpool.py", line 871, in urlopen
+    return self.urlopen(
+           ~~~~~~~~~~~~^
+        method,
+        ^^^^^^^
+    ...<13 lines>...
+        **response_kw,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/tejkiranyenugunti/Desktop/QA 287 project/bird_augmentation/.venv/lib/python3.14/site-packages/urllib3/connectionpool.py", line 871, in urlopen
+    return self.urlopen(
+           ~~~~~~~~~~~~^
+        method,
+        ^^^^^^^
+    ...<13 lines>...
+        **response_kw,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/tejkiranyenugunti/Desktop/QA 287 project/bird_augmentation/.venv/lib/python3.14/site-packages/urllib3/connectionpool.py", line 871, in urlopen
+    return self.urlopen(
+           ~~~~~~~~~~~~^
+        method,
+        ^^^^^^^
+    ...<13 lines>...
+        **response_kw,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/tejkiranyenugunti/Desktop/QA 287 project/bird_augmentation/.venv/lib/python3.14/site-packages/urllib3/connectionpool.py", line 841, in urlopen
+    retries = retries.increment(
+        method, url, error=new_e, _pool=self, _stacktrace=sys.exc_info()[2]
+    )
+  File "/Users/tejkiranyenugunti/Desktop/QA 287 project/bird_augmentation/.venv/lib/python3.14/site-packages/urllib3/util/retry.py", line 535, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+urllib3.exceptions.MaxRetryError: HTTPConnectionPool(host='127.0.0.1', port=4723): Max retries exceeded with url: /session (Caused by NewConnectionError("HTTPConnection(host='127.0.0.1', port=4723): Failed to establish a new connection: [Errno 61] Connection refused"))
+2026-04-26 19:59:31,227 | INFO | app_driver | Starting Appium driver with device config: {'platformName': 'Android', 'platformVersion': '14', 'deviceName': 'Pixel_6_API_34', 'udid': 'emulator-5554', 'automationName': 'UiAutomator2', 'appPackage': 'com.labs.merlinbirdid.app', 'appActivity': 'com.labs.merlinbirdid.app.activity.MainActivity', 'noReset': True, 'fullReset': False, 'autoGrantPermissions': True, 'newCommandTimeout': 300}
+2026-04-26 19:59:31,241 | ERROR | app_driver | Failed to start Appium driver.
+Traceback (most recent call last):
+  File "/Users/tejkiranyenugunti/Desktop/QA 287 project/bird_android_automation/app_driver.py", line 61, in start_driver
+    self.driver = webdriver.Remote(command_executor=APPIUM_SERVER_URL, options=options)
+                  ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/tejkiranyenugunti/Desktop/QA 287 project/bird_augmentation/.venv/lib/python3.14/site-packages/appium/webdriver/webdriver.py", line 251, in __init__
+    super().__init__(
+    ~~~~~~~~~~~~~~~~^
+        command_executor=command_executor,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+        client_config=client_config,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/tejkiranyenugunti/Desktop/QA 287 project/bird_augmentation/.venv/lib/python3.14/site-packages/selenium/webdriver/remote/webdriver.py", line 274, in __init__
+    self.start_session(capabilities)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "/Users/tejkiranyenugunti/Desktop/QA 287 project/bird_augmentation/.venv/lib/python3.14/site-packages/appium/webdriver/webdriver.py", line 345, in start_session
+    response = self.execute(RemoteCommand.NEW_SESSION, w3c_caps)
+  File "/Users/tejkiranyenugunti/Desktop/QA 287 project/bird_augmentation/.venv/lib/python3.14/site-packages/selenium/webdriver/remote/webdriver.py", line 450, in execute
+    self.error_handler.check_response(response)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/Users/tejkiranyenugunti/Desktop/QA 287 project/bird_augmentation/.venv/lib/python3.14/site-packages/selenium/webdriver/remote/errorhandler.py", line 232, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: Neither ANDROID_HOME nor ANDROID_SDK_ROOT environment variable was exported. Read https://developer.android.com/studio/command-line/variables for more details
+Stacktrace:
+UnknownError: Neither ANDROID_HOME nor ANDROID_SDK_ROOT environment variable was exported. Read https://developer.android.com/studio/command-line/variables for more details
+    at getResponseForW3CError (/opt/homebrew/lib/node_modules/appium/node_modules/@appium/base-driver/build/lib/protocol/errors.js:824:36)
+    at asyncHandler (/opt/homebrew/lib/node_modules/appium/node_modules/@appium/base-driver/build/lib/protocol/protocol.js:476:77)
+The above error is caused by
+Error: Neither ANDROID_HOME nor ANDROID_SDK_ROOT environment variable was exported. Read https://developer.android.com/studio/command-line/variables for more details
+    at requireSdkRoot (/Users/tejkiranyenugunti/.appium/node_modules/appium-uiautomator2-driver/node_modules/appium-adb/build/lib/helpers.js:49:15)
+    at ADB.createADB (/Users/tejkiranyenugunti/.appium/node_modules/appium-uiautomator2-driver/node_modules/appium-adb/build/lib/adb.js:158:58)
+    at AndroidUiautomator2Driver.createBaseADB (/Users/tejkiranyenugunti/.appium/node_modules/appium-uiautomator2-driver/node_modules/appium-android-driver/build/lib/commands/device/utils.js:127:35)
+    at AndroidUiautomator2Driver.getDeviceInfoFromCaps (/Users/tejkiranyenugunti/.appium/node_modules/appium-uiautomator2-driver/node_modules/appium-android-driver/build/lib/commands/device/common.js:64:55)
+    at AndroidUiautomator2Driver.createSession (/Users/tejkiranyenugunti/.appium/node_modules/appium-uiautomator2-driver/build/lib/driver.js:211:49)
+    at async AppiumDriver.createSession (/opt/homebrew/lib/node_modules/appium/build/lib/appium.js:272:44)
+2026-04-26 20:45:51,096 | INFO | app_driver | Starting Appium driver with device config: {'platformName': 'Android', 'platformVersion': '14', 'deviceName': 'Pixel_6_API_34', 'udid': 'emulator-5554', 'automationName': 'UiAutomator2', 'appPackage': 'com.labs.merlinbirdid.app', 'appActivity': 'com.labs.merlinbirdid.app.activity.MainActivity', 'noReset': True, 'fullReset': False, 'autoGrantPermissions': True, 'newCommandTimeout': 300}
+2026-04-26 20:45:51,308 | ERROR | app_driver | Failed to start Appium driver.
+Traceback (most recent call last):
+  File "/Users/tejkiranyenugunti/Desktop/QA 287 project/bird_android_automation/app_driver.py", line 61, in start_driver
+    self.driver = webdriver.Remote(command_executor=APPIUM_SERVER_URL, options=options)
+                  ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/tejkiranyenugunti/Desktop/QA 287 project/bird_augmentation/.venv/lib/python3.14/site-packages/appium/webdriver/webdriver.py", line 251, in __init__
+    super().__init__(
+    ~~~~~~~~~~~~~~~~^
+        command_executor=command_executor,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+        client_config=client_config,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/tejkiranyenugunti/Desktop/QA 287 project/bird_augmentation/.venv/lib/python3.14/site-packages/selenium/webdriver/remote/webdriver.py", line 274, in __init__
+    self.start_session(capabilities)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "/Users/tejkiranyenugunti/Desktop/QA 287 project/bird_augmentation/.venv/lib/python3.14/site-packages/appium/webdriver/webdriver.py", line 345, in start_session
+    response = self.execute(RemoteCommand.NEW_SESSION, w3c_caps)
+  File "/Users/tejkiranyenugunti/Desktop/QA 287 project/bird_augmentation/.venv/lib/python3.14/site-packages/selenium/webdriver/remote/webdriver.py", line 450, in execute
+    self.error_handler.check_response(response)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/Users/tejkiranyenugunti/Desktop/QA 287 project/bird_augmentation/.venv/lib/python3.14/site-packages/selenium/webdriver/remote/errorhandler.py", line 232, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: Neither ANDROID_HOME nor ANDROID_SDK_ROOT environment variable was exported. Read https://developer.android.com/studio/command-line/variables for more details
+Stacktrace:
+UnknownError: Neither ANDROID_HOME nor ANDROID_SDK_ROOT environment variable was exported. Read https://developer.android.com/studio/command-line/variables for more details
+    at getResponseForW3CError (/opt/homebrew/lib/node_modules/appium/node_modules/@appium/base-driver/build/lib/protocol/errors.js:824:36)
+    at asyncHandler (/opt/homebrew/lib/node_modules/appium/node_modules/@appium/base-driver/build/lib/protocol/protocol.js:476:77)
+The above error is caused by
+Error: Neither ANDROID_HOME nor ANDROID_SDK_ROOT environment variable was exported. Read https://developer.android.com/studio/command-line/variables for more details
+    at requireSdkRoot (/Users/tejkiranyenugunti/.appium/node_modules/appium-uiautomator2-driver/node_modules/appium-adb/build/lib/helpers.js:49:15)
+    at ADB.createADB (/Users/tejkiranyenugunti/.appium/node_modules/appium-uiautomator2-driver/node_modules/appium-adb/build/lib/adb.js:158:58)
+    at AndroidUiautomator2Driver.createBaseADB (/Users/tejkiranyenugunti/.appium/node_modules/appium-uiautomator2-driver/node_modules/appium-android-driver/build/lib/commands/device/utils.js:127:35)
+    at AndroidUiautomator2Driver.getDeviceInfoFromCaps (/Users/tejkiranyenugunti/.appium/node_modules/appium-uiautomator2-driver/node_modules/appium-android-driver/build/lib/commands/device/common.js:64:55)
+    at AndroidUiautomator2Driver.createSession (/Users/tejkiranyenugunti/.appium/node_modules/appium-uiautomator2-driver/build/lib/driver.js:211:49)
+    at async AppiumDriver.createSession (/opt/homebrew/lib/node_modules/appium/build/lib/appium.js:272:44)
+2026-04-26 20:47:33,694 | INFO | app_driver | Starting Appium driver with device config: {'platformName': 'Android', 'platformVersion': '14', 'deviceName': 'Pixel_6_API_34', 'udid': 'emulator-5554', 'automationName': 'UiAutomator2', 'appPackage': 'com.labs.merlinbirdid.app', 'appActivity': 'com.labs.merlinbirdid.app.activity.MainActivity', 'noReset': True, 'fullReset': False, 'autoGrantPermissions': True, 'newCommandTimeout': 300}
+2026-04-26 20:47:33,717 | ERROR | app_driver | Failed to start Appium driver.
+Traceback (most recent call last):
+  File "/Users/tejkiranyenugunti/Desktop/QA 287 project/bird_android_automation/app_driver.py", line 61, in start_driver
+    self.driver = webdriver.Remote(command_executor=APPIUM_SERVER_URL, options=options)
+                  ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/tejkiranyenugunti/Desktop/QA 287 project/bird_augmentation/.venv/lib/python3.14/site-packages/appium/webdriver/webdriver.py", line 251, in __init__
+    super().__init__(
+    ~~~~~~~~~~~~~~~~^
+        command_executor=command_executor,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+        client_config=client_config,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/tejkiranyenugunti/Desktop/QA 287 project/bird_augmentation/.venv/lib/python3.14/site-packages/selenium/webdriver/remote/webdriver.py", line 274, in __init__
+    self.start_session(capabilities)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "/Users/tejkiranyenugunti/Desktop/QA 287 project/bird_augmentation/.venv/lib/python3.14/site-packages/appium/webdriver/webdriver.py", line 345, in start_session
+    response = self.execute(RemoteCommand.NEW_SESSION, w3c_caps)
+  File "/Users/tejkiranyenugunti/Desktop/QA 287 project/bird_augmentation/.venv/lib/python3.14/site-packages/selenium/webdriver/remote/webdriver.py", line 450, in execute
+    self.error_handler.check_response(response)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/Users/tejkiranyenugunti/Desktop/QA 287 project/bird_augmentation/.venv/lib/python3.14/site-packages/selenium/webdriver/remote/errorhandler.py", line 232, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: Neither ANDROID_HOME nor ANDROID_SDK_ROOT environment variable was exported. Read https://developer.android.com/studio/command-line/variables for more details
+Stacktrace:
+UnknownError: Neither ANDROID_HOME nor ANDROID_SDK_ROOT environment variable was exported. Read https://developer.android.com/studio/command-line/variables for more details
+    at getResponseForW3CError (/opt/homebrew/lib/node_modules/appium/node_modules/@appium/base-driver/build/lib/protocol/errors.js:824:36)
+    at asyncHandler (/opt/homebrew/lib/node_modules/appium/node_modules/@appium/base-driver/build/lib/protocol/protocol.js:476:77)
+The above error is caused by
+Error: Neither ANDROID_HOME nor ANDROID_SDK_ROOT environment variable was exported. Read https://developer.android.com/studio/command-line/variables for more details
+    at requireSdkRoot (/Users/tejkiranyenugunti/.appium/node_modules/appium-uiautomator2-driver/node_modules/appium-adb/build/lib/helpers.js:49:15)
+    at ADB.createADB (/Users/tejkiranyenugunti/.appium/node_modules/appium-uiautomator2-driver/node_modules/appium-adb/build/lib/adb.js:158:58)
+    at AndroidUiautomator2Driver.createBaseADB (/Users/tejkiranyenugunti/.appium/node_modules/appium-uiautomator2-driver/node_modules/appium-android-driver/build/lib/commands/device/utils.js:127:35)
+    at AndroidUiautomator2Driver.getDeviceInfoFromCaps (/Users/tejkiranyenugunti/.appium/node_modules/appium-uiautomator2-driver/node_modules/appium-android-driver/build/lib/commands/device/common.js:64:55)
+    at AndroidUiautomator2Driver.createSession (/Users/tejkiranyenugunti/.appium/node_modules/appium-uiautomator2-driver/build/lib/driver.js:211:49)
+    at async AppiumDriver.createSession (/opt/homebrew/lib/node_modules/appium/build/lib/appium.js:272:44)
+2026-04-26 20:52:56,445 | INFO | app_driver | Starting Appium driver with device config: {'platformName': 'Android', 'platformVersion': '14', 'deviceName': 'Pixel_6_API_34', 'udid': 'emulator-5554', 'automationName': 'UiAutomator2', 'appPackage': 'com.labs.merlinbirdid.app', 'appActivity': 'com.labs.merlinbirdid.app.activity.MainActivity', 'noReset': True, 'fullReset': False, 'autoGrantPermissions': True, 'newCommandTimeout': 300}
+2026-04-26 20:53:12,709 | INFO | app_driver | Appium driver started successfully.
+2026-04-26 20:54:45,173 | INFO | app_driver | Saved screenshot: test_results/screenshot_before_TC001.png
+2026-04-26 20:55:07,725 | INFO | app_driver | Saved screenshot: test_results/screenshot_after_TC001.png
+2026-04-26 20:55:08,932 | INFO | app_driver | Appium driver stopped.
+2026-04-26 20:56:31,265 | INFO | app_driver | Starting Appium driver with device config: {'platformName': 'Android', 'platformVersion': '14', 'deviceName': 'Pixel_6_API_34', 'udid': 'emulator-5554', 'automationName': 'UiAutomator2', 'appPackage': 'com.labs.merlinbirdid.app', 'appActivity': 'com.labs.merlinbirdid.app.activity.MainActivity', 'noReset': True, 'fullReset': False, 'autoGrantPermissions': True, 'newCommandTimeout': 300}
+2026-04-26 20:56:33,495 | INFO | app_driver | Appium driver started successfully.
+2026-04-26 20:58:05,451 | INFO | app_driver | Saved screenshot: test_results/screenshot_before_TC001.png
+2026-04-26 20:58:36,205 | INFO | app_driver | Saved screenshot: test_results/screenshot_after_TC001.png
+2026-04-26 20:58:37,777 | INFO | app_driver | Appium driver stopped.
+2026-04-26 21:00:35,579 | INFO | app_driver | Starting Appium driver with device config: {'platformName': 'Android', 'platformVersion': '14', 'deviceName': 'Pixel_6_API_34', 'udid': 'emulator-5554', 'automationName': 'UiAutomator2', 'appPackage': 'com.labs.merlinbirdid.app', 'appActivity': 'com.labs.merlinbirdid.app.activity.MainActivity', 'noReset': True, 'fullReset': False, 'autoGrantPermissions': True, 'newCommandTimeout': 300}
+2026-04-26 21:00:39,929 | INFO | app_driver | Appium driver started successfully.
+2026-04-26 21:02:14,193 | INFO | app_driver | Saved screenshot: test_results/screenshot_before_TC001.png
+2026-04-26 21:03:31,975 | INFO | app_driver | Saved screenshot: test_results/screenshot_after_TC001.png
+2026-04-26 21:03:33,614 | INFO | app_driver | Appium driver stopped.
+2026-04-26 21:04:02,858 | INFO | app_driver | Starting Appium driver with device config: {'platformName': 'Android', 'platformVersion': '14', 'deviceName': 'Pixel_6_API_34', 'udid': 'emulator-5554', 'automationName': 'UiAutomator2', 'appPackage': 'com.labs.merlinbirdid.app', 'appActivity': 'com.labs.merlinbirdid.app.activity.MainActivity', 'noReset': True, 'fullReset': False, 'autoGrantPermissions': True, 'newCommandTimeout': 300}
+2026-04-26 21:04:06,189 | INFO | app_driver | Appium driver started successfully.
+2026-04-26 21:05:40,001 | INFO | app_driver | Saved screenshot: test_results/screenshot_before_TC001.png
+2026-04-26 21:07:01,768 | INFO | app_driver | Saved screenshot: test_results/screenshot_after_TC001.png
+2026-04-26 21:07:03,530 | INFO | app_driver | Appium driver stopped.
+2026-04-26 21:07:51,900 | INFO | app_driver | Starting Appium driver with device config: {'platformName': 'Android', 'platformVersion': '14', 'deviceName': 'Pixel_6_API_34', 'udid': 'emulator-5554', 'automationName': 'UiAutomator2', 'appPackage': 'com.labs.merlinbirdid.app', 'appActivity': 'com.labs.merlinbirdid.app.activity.MainActivity', 'noReset': True, 'fullReset': False, 'autoGrantPermissions': True, 'newCommandTimeout': 300}
+2026-04-26 21:07:53,466 | INFO | app_driver | Appium driver started successfully.
+2026-04-26 21:09:24,384 | INFO | app_driver | Saved screenshot: test_results/screenshot_before_TC001.png
+2026-04-26 21:10:45,864 | INFO | app_driver | Saved screenshot: test_results/screenshot_after_TC001.png
+2026-04-26 21:11:23,109 | INFO | app_driver | Appium driver stopped.
+2026-04-26 21:11:46,876 | INFO | app_driver | Starting Appium driver with device config: {'platformName': 'Android', 'platformVersion': '14', 'deviceName': 'Pixel_6_API_34', 'udid': 'emulator-5554', 'automationName': 'UiAutomator2', 'appPackage': 'com.labs.merlinbirdid.app', 'appActivity': 'com.labs.merlinbirdid.app.activity.MainActivity', 'noReset': True, 'fullReset': False, 'autoGrantPermissions': True, 'newCommandTimeout': 300}
+2026-04-26 21:11:48,518 | INFO | app_driver | Appium driver started successfully.
+2026-04-26 21:13:20,112 | INFO | app_driver | Saved screenshot: test_results/screenshot_before_TC001.png
+2026-04-26 21:15:21,969 | INFO | app_driver | Dumped UI XML to: test_results/page_source_gallery_20260426_211521.xml
+2026-04-26 21:15:22,230 | INFO | app_driver | Saved screenshot: test_results/screenshot_after_TC001.png
+2026-04-26 21:15:23,444 | INFO | app_driver | Appium driver stopped.
+2026-04-26 21:15:50,776 | INFO | app_driver | Starting Appium driver with device config: {'platformName': 'Android', 'platformVersion': '14', 'deviceName': 'Pixel_6_API_34', 'udid': 'emulator-5554', 'automationName': 'UiAutomator2', 'appPackage': 'com.labs.merlinbirdid.app', 'appActivity': 'com.labs.merlinbirdid.app.activity.MainActivity', 'noReset': True, 'fullReset': False, 'autoGrantPermissions': True, 'newCommandTimeout': 300}
+2026-04-26 21:15:52,439 | INFO | app_driver | Appium driver started successfully.
+2026-04-26 21:17:25,752 | INFO | app_driver | Saved screenshot: test_results/screenshot_before_TC001.png
+2026-04-26 21:18:49,962 | ERROR | app_driver | Failed to collect all text on screen.
+Traceback (most recent call last):
+  File "/Users/tejkiranyenugunti/Desktop/QA 287 project/bird_android_automation/app_driver.py", line 149, in get_all_text_on_screen
+    texts = [el.text.strip() for el in elements if el.text and el.text.strip()]
+                                                   ^^^^^^^
+  File "/Users/tejkiranyenugunti/Desktop/QA 287 project/bird_augmentation/.venv/lib/python3.14/site-packages/selenium/webdriver/remote/webelement.py", line 105, in text
+    return self._execute(Command.GET_ELEMENT_TEXT)["value"]
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/tejkiranyenugunti/Desktop/QA 287 project/bird_augmentation/.venv/lib/python3.14/site-packages/selenium/webdriver/remote/webelement.py", line 508, in _execute
+    return self._parent.execute(command, params)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/Users/tejkiranyenugunti/Desktop/QA 287 project/bird_augmentation/.venv/lib/python3.14/site-packages/selenium/webdriver/remote/webdriver.py", line 450, in execute
+    self.error_handler.check_response(response)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/Users/tejkiranyenugunti/Desktop/QA 287 project/bird_augmentation/.venv/lib/python3.14/site-packages/appium/webdriver/errorhandler.py", line 125, in check_response
+    raise exception_class(msg=message, stacktrace=format_stacktrace(stacktrace))
+selenium.common.exceptions.StaleElementReferenceException: Message: Cached elements 'By.xpath: //android.widget.TextView' do not exist in DOM anymore; For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#staleelementreferenceexception
+Stacktrace:
+io.appium.uiautomator2.common.exceptions.StaleElementReferenceException: Cached elements 'By.xpath: //android.widget.TextView' do not exist in DOM anymore
+	at io.appium.uiautomator2.model.ElementsCache.restore(ElementsCache.java:78)
+	at io.appium.uiautomator2.model.ElementsCache.get(ElementsCache.java:155)
+	at io.appium.uiautomator2.handler.GetText.safeHandle(GetText.java:20)
+	at io.appium.uiautomator2.handler.request.SafeRequestHandler.handle(SafeRequestHandler.java:59)
+	at io.appium.uiautomator2.server.AppiumServlet.handleRequest(AppiumServlet.java:267)
+	at io.appium.uiautomator2.server.AppiumServlet.handleHttpRequest(AppiumServlet.java:261)
+	at io.appium.uiautomator2.http.ServerHandler.channelRead(ServerHandler.java:77)
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:356)
+	at io.netty.handler.codec.MessageToMessageDecoder.channelRead(MessageToMessageDecoder.java:107)
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:356)
+	at io.netty.channel.CombinedChannelDuplexHandler$DelegatingChannelHandlerContext.fireChannelRead(CombinedChannelDuplexHandler.java:434)
+	at io.netty.handler.codec.ByteToMessageDecoder.fireChannelRead(ByteToMessageDecoder.java:361)
+	at io.netty.handler.codec.ByteToMessageDecoder.channelRead(ByteToMessageDecoder.java:325)
+	at io.netty.channel.CombinedChannelDuplexHandler.channelRead(CombinedChannelDuplexHandler.java:249)
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:354)
+	at io.netty.handler.timeout.IdleStateHandler.channelRead(IdleStateHandler.java:293)
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:354)
+	at io.netty.channel.DefaultChannelPipeline$HeadContext.channelRead(DefaultChannelPipeline.java:1429)
+	at io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:918)
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:172)
+	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.handle(AbstractNioChannel.java:445)
+	at io.netty.channel.nio.NioIoHandler$DefaultNioRegistration.handle(NioIoHandler.java:388)
+	at io.netty.channel.nio.NioIoHandler.processSelectedKey(NioIoHandler.java:596)
+	at io.netty.channel.nio.NioIoHandler.processSelectedKeysOptimized(NioIoHandler.java:571)
+	at io.netty.channel.nio.NioIoHandler.processSelectedKeys(NioIoHandler.java:512)
+	at io.netty.channel.nio.NioIoHandler.run(NioIoHandler.java:484)
+	at io.netty.channel.SingleThreadIoEventLoop.runIo(SingleThreadIoEventLoop.java:225)
+	at io.netty.channel.SingleThreadIoEventLoop.run(SingleThreadIoEventLoop.java:196)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:1195)
+	at io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:1012)
+
+2026-04-26 21:19:40,754 | INFO | app_driver | Saved screenshot: test_results/screenshot_after_TC001.png
+2026-04-26 21:20:25,582 | INFO | app_driver | Appium driver stopped.
+2026-04-26 21:35:35,449 | INFO | app_driver | Starting Appium driver with device config: {'platformName': 'Android', 'platformVersion': '14', 'deviceName': 'Pixel_6_API_34', 'udid': 'emulator-5554', 'automationName': 'UiAutomator2', 'appPackage': 'com.labs.merlinbirdid.app', 'appActivity': 'com.labs.merlinbirdid.app.activity.MainActivity', 'noReset': True, 'fullReset': False, 'autoGrantPermissions': True, 'newCommandTimeout': 300}
+2026-04-26 21:35:39,893 | INFO | app_driver | Appium driver started successfully.
+2026-04-26 21:37:18,411 | INFO | app_driver | Appium driver stopped.
+2026-04-26 21:37:27,588 | INFO | app_driver | Starting Appium driver with device config: {'platformName': 'Android', 'platformVersion': '14', 'deviceName': 'Pixel_6_API_34', 'udid': 'emulator-5554', 'automationName': 'UiAutomator2', 'appPackage': 'com.labs.merlinbirdid.app', 'appActivity': 'com.labs.merlinbirdid.app.activity.MainActivity', 'noReset': True, 'fullReset': False, 'autoGrantPermissions': True, 'newCommandTimeout': 300}
+2026-04-26 21:37:32,047 | INFO | app_driver | Appium driver started successfully.
+2026-04-26 21:39:03,635 | INFO | app_driver | Saved screenshot: test_results/screenshot_before_TC001.png
+2026-04-26 21:40:46,187 | INFO | app_driver | Dumped UI XML to: test_results/page_source_gallery_20260426_214046.xml
+2026-04-26 21:40:46,458 | INFO | app_driver | Saved screenshot: test_results/screenshot_after_TC001.png
+2026-04-26 21:40:47,654 | INFO | app_driver | Appium driver stopped.
+2026-04-26 22:04:45,956 | INFO | app_driver | Starting Appium driver with device config: {'platformName': 'Android', 'platformVersion': '14', 'deviceName': 'Pixel_6_API_34', 'udid': 'emulator-5554', 'automationName': 'UiAutomator2', 'appPackage': 'com.labs.merlinbirdid.app', 'appActivity': 'com.labs.merlinbirdid.app.activity.MainActivity', 'noReset': True, 'fullReset': False, 'autoGrantPermissions': True, 'newCommandTimeout': 300}
+2026-04-26 22:04:47,648 | INFO | app_driver | Appium driver started successfully.
+2026-04-26 22:06:45,138 | INFO | app_driver | Saved screenshot: test_results/screenshot_INT_001.png
+2026-04-26 22:06:45,353 | INFO | app_driver | Appium driver stopped.
+2026-04-26 22:15:49,508 | INFO | app_driver | Starting Appium driver with device config: {'platformName': 'Android', 'platformVersion': '14', 'deviceName': 'Pixel_6_API_34', 'udid': 'emulator-5554', 'automationName': 'UiAutomator2', 'appPackage': 'com.labs.merlinbirdid.app', 'appActivity': 'com.labs.merlinbirdid.app.activity.MainActivity', 'noReset': True, 'fullReset': False, 'autoGrantPermissions': True, 'newCommandTimeout': 300}
+2026-04-26 22:15:50,698 | INFO | app_driver | Starting Appium driver with device config: {'platformName': 'Android', 'platformVersion': '14', 'deviceName': 'Pixel_6_API_34', 'udid': 'emulator-5554', 'automationName': 'UiAutomator2', 'appPackage': 'com.labs.merlinbirdid.app', 'appActivity': 'com.labs.merlinbirdid.app.activity.MainActivity', 'noReset': True, 'fullReset': False, 'autoGrantPermissions': True, 'newCommandTimeout': 300}
+2026-04-26 22:15:55,653 | INFO | app_driver | Appium driver started successfully.
+2026-04-26 22:15:55,831 | ERROR | app_driver | Failed to save screenshot: test_results/screenshot_before_TC001.png
+Traceback (most recent call last):
+  File "/Users/tejkiranyenugunti/Desktop/QA 287 project/bird_android_automation/app_driver.py", line 209, in take_screenshot
+    self.driver.save_screenshot(filename)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/Users/tejkiranyenugunti/Desktop/QA 287 project/bird_augmentation/.venv/lib/python3.14/site-packages/selenium/webdriver/remote/webdriver.py", line 903, in save_screenshot
+    return self.get_screenshot_as_file(filename)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/Users/tejkiranyenugunti/Desktop/QA 287 project/bird_augmentation/.venv/lib/python3.14/site-packages/selenium/webdriver/remote/webdriver.py", line 880, in get_screenshot_as_file
+    png = self.get_screenshot_as_png()
+  File "/Users/tejkiranyenugunti/Desktop/QA 287 project/bird_augmentation/.venv/lib/python3.14/site-packages/selenium/webdriver/remote/webdriver.py", line 911, in get_screenshot_as_png
+    return b64decode(self.get_screenshot_as_base64().encode("ascii"))
+                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/tejkiranyenugunti/Desktop/QA 287 project/bird_augmentation/.venv/lib/python3.14/site-packages/selenium/webdriver/remote/webdriver.py", line 921, in get_screenshot_as_base64
+    return self.execute(Command.SCREENSHOT)["value"]
+           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "/Users/tejkiranyenugunti/Desktop/QA 287 project/bird_augmentation/.venv/lib/python3.14/site-packages/selenium/webdriver/remote/webdriver.py", line 450, in execute
+    self.error_handler.check_response(response)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/Users/tejkiranyenugunti/Desktop/QA 287 project/bird_augmentation/.venv/lib/python3.14/site-packages/appium/webdriver/errorhandler.py", line 125, in check_response
+    raise exception_class(msg=message, stacktrace=format_stacktrace(stacktrace))
+selenium.common.exceptions.WebDriverException: Message: Could not proxy command to the remote server. Original error: socket hang up
+Stacktrace:
+UnknownError: Could not proxy command to the remote server. Original error: socket hang up
+    at ProxyRequestError.getActualError (/opt/homebrew/lib/node_modules/appium/node_modules/@appium/base-driver/build/lib/protocol/errors.js:678:16)
+    at UIA2Proxy.command (/opt/homebrew/lib/node_modules/appium/node_modules/@appium/base-driver/build/lib/jsonwp-proxy/proxy.js:270:27)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async AndroidUiautomator2Driver.getScreenshot (/Users/tejkiranyenugunti/.appium/node_modules/appium-uiautomator2-driver/build/lib/commands/screenshot.js:72:19)
+2026-04-26 22:15:55,858 | INFO | app_driver | Appium driver started successfully.
+2026-04-26 22:16:02,086 | INFO | app_driver | Appium driver stopped.
+2026-04-26 22:16:02,223 | INFO | app_driver | Appium driver stopped.
+2026-04-26 22:16:14,436 | INFO | app_driver | Starting Appium driver with device config: {'platformName': 'Android', 'platformVersion': '14', 'deviceName': 'Pixel_6_API_34', 'udid': 'emulator-5554', 'automationName': 'UiAutomator2', 'appPackage': 'com.labs.merlinbirdid.app', 'appActivity': 'com.labs.merlinbirdid.app.activity.MainActivity', 'noReset': True, 'fullReset': False, 'autoGrantPermissions': True, 'newCommandTimeout': 300}
+2026-04-26 22:16:16,023 | INFO | app_driver | Appium driver started successfully.
+2026-04-26 22:17:55,576 | INFO | app_driver | Saved screenshot: test_results/screenshot_before_TC001.png
+2026-04-26 22:21:34,337 | INFO | app_driver | Saved screenshot: test_results/screenshot_after_TC001.png
+2026-04-26 22:21:35,854 | INFO | app_driver | Appium driver stopped.
+2026-04-26 22:37:17,139 | INFO | app_driver | Starting Appium driver with device config: {'platformName': 'Android', 'platformVersion': '14', 'deviceName': 'Pixel_6_API_34', 'udid': 'emulator-5554', 'automationName': 'UiAutomator2', 'appPackage': 'com.labs.merlinbirdid.app', 'appActivity': 'com.labs.merlinbirdid.app.activity.MainActivity', 'noReset': True, 'fullReset': False, 'autoGrantPermissions': True, 'newCommandTimeout': 300}
+2026-04-26 22:37:19,106 | INFO | app_driver | Appium driver started successfully.
+2026-04-26 22:39:27,595 | INFO | app_driver | Saved screenshot: test_results/screenshot_INT_001.png
+2026-04-26 22:40:33,455 | INFO | app_driver | Saved screenshot: test_results/screenshot_INT_002.png
+2026-04-26 22:42:30,535 | INFO | app_driver | Saved screenshot: test_results/screenshot_INT_003.png
+2026-04-26 22:42:52,330 | INFO | app_driver | Appium driver stopped.
+2026-04-26 22:48:36,737 | INFO | app_driver | Starting Appium driver with device config: {'platformName': 'Android', 'platformVersion': '14', 'deviceName': 'Pixel_6_API_34', 'udid': 'emulator-5554', 'automationName': 'UiAutomator2', 'appPackage': 'com.labs.merlinbirdid.app', 'appActivity': 'com.labs.merlinbirdid.app.activity.MainActivity', 'noReset': True, 'fullReset': False, 'autoGrantPermissions': True, 'newCommandTimeout': 300}
+2026-04-26 22:48:38,648 | INFO | app_driver | Appium driver started successfully.
+2026-04-26 22:50:27,421 | INFO | app_driver | Saved screenshot: test_results/screenshot_INT_001.png
+2026-04-26 22:50:27,918 | INFO | app_driver | Appium driver stopped.
+2026-04-26 22:59:18,186 | INFO | app_driver | Starting Appium driver with device config: {'platformName': 'Android', 'platformVersion': '14', 'deviceName': 'Pixel_6_API_34', 'udid': 'emulator-5554', 'automationName': 'UiAutomator2', 'appPackage': 'com.labs.merlinbirdid.app', 'appActivity': 'com.labs.merlinbirdid.app.activity.MainActivity', 'noReset': True, 'fullReset': False, 'autoGrantPermissions': True, 'newCommandTimeout': 300}
+2026-04-26 22:59:22,760 | INFO | app_driver | Appium driver started successfully.
+2026-04-26 23:01:13,182 | INFO | app_driver | Saved screenshot: test_results/screenshot_INT_001.png
+2026-04-26 23:01:13,413 | INFO | app_driver | Appium driver stopped.
+2026-04-26 23:04:53,798 | INFO | app_driver | Starting Appium driver with device config: {'platformName': 'Android', 'platformVersion': '14', 'deviceName': 'Pixel_6_API_34', 'udid': 'emulator-5554', 'automationName': 'UiAutomator2', 'appPackage': 'com.labs.merlinbirdid.app', 'appActivity': 'com.labs.merlinbirdid.app.activity.MainActivity', 'noReset': True, 'fullReset': False, 'autoGrantPermissions': True, 'newCommandTimeout': 300}
+2026-04-26 23:04:55,522 | INFO | app_driver | Appium driver started successfully.
+2026-04-26 23:06:34,640 | INFO | app_driver | Appium driver stopped.

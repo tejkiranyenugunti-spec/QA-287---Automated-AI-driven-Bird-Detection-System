@@ -1,0 +1,4 @@
+Appium-Python-Client>=4.0.0
+selenium>=4.15.0
+opencv-python-headless
+numpy

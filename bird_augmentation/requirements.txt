@@ -1,0 +1,5 @@
+streamlit
+albumentations
+opencv-python-headless
+pillow
+numpy
