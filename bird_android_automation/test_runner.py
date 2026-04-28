@@ -112,7 +112,7 @@ class TestRunner:
             if not self.interactions.pick_photo_from_gallery(f"{DEVICE_IMAGE_DIR}/{image_name}"):
                 raise RuntimeError("Could not select test image from gallery.")
 
-            self.interactions.wait_for_analysis_complete(max_wait=30)
+            self.interactions.wait_for_analysis_complete(max_wait=120)
             app_result = self.interactions.extract_result()
             classification = self.classifier.classify_result(app_result, expected_species)
 

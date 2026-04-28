@@ -202,30 +202,21 @@ class MerlinInteractions:
             ],
             timeout=5,
         )
-
         if not picker_open:
-            print("Picker did not open, retrying...")
+            logger.warning("Picker did not open, retrying choose_photo click.")
             self.driver.click_with_fallbacks(SELECTORS_MERLIN["choose_photo"])
             time.sleep(2)
 
-        all_text = self.driver.get_all_text_on_screen()
-        print("PICKER SCREEN TEXT:\n", all_text)
+        image_name = os.path.basename(image_path)
+        image_stem = Path(image_name).stem
 
-        # Open the roots drawer and pick the device's internal storage.
-        self.driver.click_with_fallbacks(["//*[@content-desc='Show roots']"])
-        time.sleep(1)
-        self.driver.click_with_fallbacks(
-            [
-                "//android.widget.TextView[contains(@text,'Pixel')]",
-                "//android.widget.TextView[contains(@text,'Internal storage')]",
-                "//android.widget.TextView[contains(@text,'This device')]",
-            ]
-        )
-        time.sleep(1)
-        self.driver.click_with_fallbacks(["//android.widget.TextView[contains(@text,'DCIM')]"])
-        time.sleep(1)
-        self.driver.click_with_fallbacks(["//android.widget.TextView[contains(@text,'Camera')]"])
-        time.sleep(1)
+        # Optimistic: if picker remembers DCIM/Camera from a previous session,
+        # we can skip drawer navigation entirely.
+        if self._scroll_to_and_click_filename(image_name, image_stem):
+            return True
+
+        # Otherwise navigate explicitly through the roots drawer.
+        self._navigate_picker_to_dcim_camera()
         self.driver.click_with_fallbacks(
             [
                 "//*[@content-desc='List view']",
@@ -234,32 +225,104 @@ class MerlinInteractions:
         )
         time.sleep(1)
 
-        image_name = os.path.basename(image_path)
-        image_stem = Path(image_name).stem
-        found = False
-        for _ in range(4):
-            if self.driver.click_with_fallbacks(
-                [
-                    f"//android.widget.TextView[contains(@text,'{image_name}')]",
-                    f"//android.widget.TextView[contains(@text,'{image_stem}')]",
-                    f"//*[contains(@content-desc,'{image_stem}')]",
-                ]
-            ):
-                found = True
+        if self._scroll_to_and_click_filename(image_name, image_stem):
+            return True
+
+        ts = datetime.now().strftime("%Y%m%d_%H%M%S")
+        dump_path = f"test_results/page_source_gallery_{ts}.xml"
+        self.driver.dump_ui_to_file(dump_path)
+        raise Exception(f"Could not find image {image_name} in picker")
+
+    def _navigate_picker_to_dcim_camera(self) -> None:
+        """Open roots drawer, pick internal storage, navigate to DCIM/Camera."""
+        for attempt in range(3):
+            self.driver.click_with_fallbacks(["//*[@content-desc='Show roots']"], timeout=2)
+            time.sleep(1.2)
+            if self._click_first_non_recent_root():
+                logger.info("Opened device storage root on drawer attempt %s.", attempt + 1)
                 break
-            if self.driver.driver is not None:
-                self.driver.driver.swipe(500, 1500, 500, 800, 400)
+            logger.warning("Drawer did not yield a storage root on attempt %s.", attempt + 1)
+        time.sleep(1.5)
+
+        for _ in range(3):
+            if self.driver.click_with_fallbacks(
+                ["//android.widget.TextView[contains(@text,'DCIM')]"], timeout=2
+            ):
+                break
             time.sleep(1)
+        time.sleep(1.5)
 
-        if not found:
-            ts = datetime.now().strftime("%Y%m%d_%H%M%S")
-            dump_path = f"test_results/page_source_gallery_{ts}.xml"
-            self.driver.dump_ui_to_file(dump_path)
-            raise Exception(f"Could not find image {image_name} in picker")
-        return True
+        for _ in range(3):
+            if self.driver.click_with_fallbacks(
+                ["//android.widget.TextView[contains(@text,'Camera')]"], timeout=2
+            ):
+                break
+            time.sleep(1)
+        time.sleep(1.5)
 
-    def wait_for_analysis_complete(self, max_wait: int = 30) -> bool:
-        """Wait until result text indicates completion or timeout."""
+    def _click_first_non_recent_root(self) -> bool:
+        """Click the first drawer item whose label is not Recent / Downloads."""
+        if self.driver.driver is None:
+            return False
+        try:
+            roots = self.driver.driver.find_elements(
+                AppiumBy.XPATH,
+                "//android.widget.TextView[@resource-id='com.google.android.documentsui:id/title']",
+            )
+        except Exception:
+            roots = []
+        skip = {"recent", "downloads", "pictures"}
+        for el in roots:
+            try:
+                label = (el.text or "").strip()
+                if label and label.lower() not in skip:
+                    logger.info("Tapping drawer root: %s", label)
+                    el.click()
+                    return True
+            except Exception:
+                continue
+        return self.driver.click_with_fallbacks(
+            [
+                "//android.widget.TextView[contains(@text,'Pixel')]",
+                "//android.widget.TextView[contains(@text,'sdk_gphone')]",
+                "//android.widget.TextView[contains(@text,'Internal storage')]",
+                "//android.widget.TextView[contains(@text,'This device')]",
+                "//android.widget.TextView[contains(@text,'Phone')]",
+            ],
+            timeout=2,
+        )
+
+    def _scroll_to_and_click_filename(self, image_name: str, image_stem: str) -> bool:
+        """Find a filename in a scrollable list by scrolling it into view, then tap it."""
+        if self.driver.click_with_fallbacks(
+            [
+                f"//android.widget.TextView[@text='{image_name}']",
+                f"//android.widget.TextView[contains(@text,'{image_name}')]",
+            ],
+            timeout=2,
+        ):
+            return True
+
+        if self.driver.driver is None:
+            return False
+
+        candidates = [
+            f'new UiScrollable(new UiSelector().scrollable(true).instance(0))'
+            f'.scrollIntoView(new UiSelector().text("{image_name}"))',
+            f'new UiScrollable(new UiSelector().scrollable(true).instance(0))'
+            f'.scrollIntoView(new UiSelector().textContains("{image_stem}"))',
+        ]
+        for ua in candidates:
+            try:
+                element = self.driver.driver.find_element(AppiumBy.ANDROID_UIAUTOMATOR, ua)
+                element.click()
+                return True
+            except Exception:
+                logger.debug("UiScrollable lookup failed for %s", ua, exc_info=True)
+        return False
+
+    def wait_for_analysis_complete(self, max_wait: int = 90) -> bool:
+        """Advance past post-pick prompts (zoom/date/location) and wait for results."""
         species_keywords = {
             keyword
             for keywords in EXPECTED_SPECIES_KEYWORDS.values()
@@ -268,18 +331,54 @@ class MerlinInteractions:
         completion_keywords = species_keywords.union(NO_IDENTIFICATION_KEYWORDS).union(
             UNCERTAIN_KEYWORDS
         )
+        next_step_selectors = [
+            "//*[@text='Next']",
+            "//*[@text='Identify']",
+            "//*[@text='Get Bird ID']",
+            "//*[@text='Continue']",
+            "//*[@text='Done']",
+            "//*[contains(@text,'Get Bird')]",
+            "//android.widget.Button[@text='Next']",
+            "//android.widget.Button[@text='Identify']",
+        ]
 
         logger.info("Waiting for Merlin analysis to complete (max_wait=%ss).", max_wait)
         start = time.time()
+        zoom_handled = False
         while time.time() - start <= max_wait:
             full_text = self.driver.get_all_text_on_screen()
             if any(keyword in full_text for keyword in completion_keywords):
                 logger.info("Analysis completion keyword detected.")
                 time.sleep(1.5)
                 return True
+            if not zoom_handled and "zoom" in full_text:
+                self._double_tap_to_zoom_out()
+                zoom_handled = True
+                time.sleep(0.5)
+            if self.driver.click_with_fallbacks(next_step_selectors, timeout=1):
+                logger.info("Tapped a post-pick advance button.")
+                time.sleep(1.5)
+                continue
             time.sleep(1)
         logger.warning("Timed out waiting for analysis completion.")
         return False
+
+    def _double_tap_to_zoom_out(self) -> None:
+        """Four double-taps at the screen center to zoom out the image on Merlin's zoom screen."""
+        if self.driver.driver is None:
+            return
+        try:
+            size = self.driver.driver.get_window_size()
+            cx = size["width"] // 2
+            cy = size["height"] // 2
+            for _ in range(4):
+                self.driver.driver.execute_script(
+                    "mobile: doubleClickGesture", {"x": cx, "y": cy}
+                )
+                time.sleep(0.4)
+            logger.info("Performed four double-taps at (%s, %s) to zoom out.", cx, cy)
+        except Exception:
+            logger.exception("Failed to double-tap for zoom-out.")
 
     def extract_result(self) -> dict[str, str | float | None]:
         """Extract species, confidence, full text, and raw page source."""
