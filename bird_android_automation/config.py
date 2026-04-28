@@ -2,7 +2,7 @@
 
 # --- Merlin Bird ID app ---
 APP_PACKAGE = "com.labs.merlinbirdid.app"
-APP_ACTIVITY = "com.labs.merlinbirdid.app.activity.MainActivity"
+APP_ACTIVITY = "edu.cornell.birds.merlin.onboarding.OnBoardingActivity"
 
 # --- Appium server ---
 APPIUM_SERVER_URL = "http://127.0.0.1:4723"
@@ -12,8 +12,8 @@ APPIUM_SERVER_URL = "http://127.0.0.1:4723"
 # `adb shell getprop ro.build.version.release`
 DEVICE_CONFIG = {
     "platformName": "Android",
-    "platformVersion": "14",  # update to match your AVD's Android version
-    "deviceName": "Pixel_6_API_34",  # update to match your AVD name
+    "platformVersion": "16",  # update to match your AVD's Android version
+    "deviceName": "Pixel_9_Pro",  # update to match your AVD name
     "udid": "emulator-5554",  # standard emulator UDID; verify with `adb devices`
     "automationName": "UiAutomator2",
     "appPackage": APP_PACKAGE,
@@ -21,7 +21,7 @@ DEVICE_CONFIG = {
     "noReset": True,  # don't wipe app data between runs (Merlin's bird pack download is heavy)
     "fullReset": False,
     "autoGrantPermissions": True,
-    "newCommandTimeout": 300,
+    "newCommandTimeout": 1800,
 }
 
 # --- Timeouts (seconds) ---
@@ -46,11 +46,11 @@ DEVICE_IMAGE_DIR = "/sdcard/DCIM/Camera"
 # Map test-case "expected_species" to a list of acceptable Merlin output strings
 # (case-insensitive substring match).
 EXPECTED_SPECIES_KEYWORDS = {
-    "rock_pigeon": ["rock pigeon", "rock dove", "columba livia", "pigeon"],
-    "house_sparrow": ["house sparrow", "passer domesticus", "sparrow"],
-    "american_crow": ["american crow", "corvus brachyrhynchos", "crow"],
-    "scarlet_macaw": ["scarlet macaw", "ara macao", "macaw", "parrot"],
-    "bald_eagle": ["bald eagle", "haliaeetus leucocephalus", "eagle"],
+    "rock_pigeon": ["rock pigeon", "rock dove", "columba livia"],
+    "house_sparrow": ["house sparrow", "passer domesticus"],
+    "american_crow": ["american crow", "corvus brachyrhynchos"],
+    "scarlet_macaw": ["scarlet macaw", "ara macao"],
+    "bald_eagle": ["bald eagle", "haliaeetus leucocephalus"],
 }
 
 # --- Result-classification keyword sets ---
@@ -99,8 +99,6 @@ SELECTORS_MERLIN = {
         "//*[@text='Pick a Photo']",
         "//*[@text='Choose Photo']",
         "//*[@text='Choose photo']",
-        "//*[contains(@text, 'Photo')]",
-        "//*[contains(@text, 'Gallery')]",
         "//*[contains(@content-desc, 'gallery')]",
         "//*[contains(@content-desc, 'pick')]",
     ],
@@ -111,6 +109,8 @@ SELECTORS_MERLIN = {
     ],
     # Result species name (these resource-ids are guesses — refine after first run)
     "result_species_name": [
+        "//*[@resource-id='com.labs.merlinbirdid.app:id/common_name']",
+        "//*[contains(@resource-id, 'common_name')]",
         "//*[contains(@resource-id, 'speciesName')]",
         "//*[contains(@resource-id, 'commonName')]",
         "//*[contains(@resource-id, 'bird_name')]",

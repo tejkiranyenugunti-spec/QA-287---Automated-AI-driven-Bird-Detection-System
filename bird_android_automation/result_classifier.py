@@ -21,7 +21,7 @@ class ResultClassifier:
         species = (app_result.get("species") or "").strip()
         full_text = (app_result.get("full_text") or "").strip()
         confidence = app_result.get("confidence")
-        haystack = f"{species} {full_text}".lower().strip()
+        haystack = (species if species else full_text).lower().strip()
         expected_keywords = EXPECTED_SPECIES_KEYWORDS.get(expected_species, [])
         expected_present = any(keyword in haystack for keyword in expected_keywords)
 

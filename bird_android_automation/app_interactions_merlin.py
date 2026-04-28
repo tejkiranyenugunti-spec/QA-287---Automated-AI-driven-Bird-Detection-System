@@ -102,6 +102,17 @@ class MerlinInteractions:
                 failed += 1
                 logger.exception("Failed pushing test image: %s", file_path)
 
+        logger.info("Triggering MediaStore scan for %s", camera_dir)
+        scan_script = (
+            f'for f in {camera_dir}/*; do '
+            f'am broadcast -a android.intent.action.MEDIA_SCANNER_SCAN_FILE '
+            f'-d "file://$f" > /dev/null 2>&1; done'
+        )
+        try:
+            self._run_adb(["shell", scan_script])
+        except Exception:
+            logger.exception("MediaStore scan broadcast failed.")
+
         result = subprocess.run(
             ["adb", "shell", "ls", "/sdcard/DCIM/Camera"],
             capture_output=True,
@@ -184,8 +195,8 @@ class MerlinInteractions:
 
         picker_open = self.driver.wait_for_any(
             [
-                "//android.widget.TextView[contains(@text,'Browse')]",
-                "//android.widget.TextView[contains(@text,'Images')]",
+                "//*[@content-desc='Show roots']",
+                "//*[@resource-id='com.google.android.documentsui:id/dir_list']",
                 "//android.widget.TextView[contains(@text,'Recent')]",
                 "//android.widget.EditText",
             ],
@@ -200,13 +211,13 @@ class MerlinInteractions:
         all_text = self.driver.get_all_text_on_screen()
         print("PICKER SCREEN TEXT:\n", all_text)
 
-        # Force picker into Browse flow and list view for filename-based selection.
-        self.driver.click_with_fallbacks(["//android.widget.TextView[contains(@text,'Browse')]"])
+        # Open the roots drawer and pick the device's internal storage.
+        self.driver.click_with_fallbacks(["//*[@content-desc='Show roots']"])
         time.sleep(1)
         self.driver.click_with_fallbacks(
             [
-                "//android.widget.TextView[contains(@text,'Internal storage')]",
                 "//android.widget.TextView[contains(@text,'Pixel')]",
+                "//android.widget.TextView[contains(@text,'Internal storage')]",
                 "//android.widget.TextView[contains(@text,'This device')]",
             ]
         )
