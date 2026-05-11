@@ -1,0 +1,21 @@
+# macOS
+.DS_Store
+
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+*$py.class
+
+# IDE / editor
+.idea/
+.vscode/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Bird automation runtime artifacts
+bird_android_automation/logs/
+bird_android_automation/reports/
+bird_android_automation/test_results/

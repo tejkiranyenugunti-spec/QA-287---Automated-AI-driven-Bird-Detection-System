@@ -76,6 +76,7 @@ class TestRunner:
             image_path = self.data_manager.get_image_path(image_name, image_type)
             if not image_path.exists():
                 raise FileNotFoundError(f"Image file not found: {image_path}")
+            device_image_name = image_path.name
 
             self.driver.take_screenshot(before_path)
 
@@ -86,7 +87,7 @@ class TestRunner:
                     self.device_id,
                     "shell",
                     "ls",
-                    f"{DEVICE_IMAGE_DIR}/{image_name}",
+                    f"{DEVICE_IMAGE_DIR}/{device_image_name}",
                 ],
                 capture_output=True,
                 text=True,
@@ -95,13 +96,13 @@ class TestRunner:
             if check_result.returncode != 0:
                 logger.error(
                     "Image %s not on device — run `python main.py --push-all-images` first",
-                    image_name,
+                    device_image_name,
                 )
                 return {
                     "test_id": test_case["test_id"],
                     "image_name": image_name,
                     "status": "error",
-                    "error": f"Image not on device: {image_name}",
+                    "error": f"Image not on device: {device_image_name}",
                     "classification": None,
                     "app_result": None,
                 }
@@ -109,10 +110,10 @@ class TestRunner:
             if not self.interactions.navigate_to_photo_id():
                 raise RuntimeError("Could not navigate to Merlin Photo ID.")
 
-            if not self.interactions.pick_photo_from_gallery(f"{DEVICE_IMAGE_DIR}/{image_name}"):
+            if not self.interactions.pick_photo_from_gallery(f"{DEVICE_IMAGE_DIR}/{device_image_name}"):
                 raise RuntimeError("Could not select test image from gallery.")
 
-            self.interactions.wait_for_analysis_complete(max_wait=120)
+            self.interactions.wait_for_analysis_complete(max_wait=240)
             app_result = self.interactions.extract_result()
             classification = self.classifier.classify_result(app_result, expected_species)
 
@@ -198,85 +199,95 @@ class TestRunner:
         correct_count = 0
         total_count = 0
 
-        while True:
-            if not expected_species:
-                print("\nAvailable species keys:")
-                for species_key in sorted(valid_species):
-                    print(f"  {species_key}")
-                expected_input = input("\nEnter expected species key (or 'q' to quit): ").strip()
-                if expected_input.lower() in ("q", "quit", "exit", ""):
+        try:
+            while True:
+                if not expected_species:
+                    print("\nAvailable species keys:")
+                    for species_key in sorted(valid_species):
+                        print(f"  {species_key}")
+                    expected_input = input("\nEnter expected species key (or 'q' to quit): ").strip()
+                    if expected_input.lower() in ("q", "quit", "exit", ""):
+                        break
+                    if expected_input not in valid_species:
+                        print(f"  WARNING: Unknown species key '{expected_input}'. Try again.")
+                        continue
+                    expected_species = expected_input
+
+                print(f"\n--- Interactive Test #{test_count} ---")
+                if expected_species:
+                    print(f"Expected species: {expected_species}")
+                else:
+                    print("Expected species: not set (observation-only mode)")
+
+                print(f"\n  -> Now go to the emulator. Pick an image of '{expected_species}' in Merlin.")
+                input("  -> Press ENTER here AFTER Merlin has shown the identification result...")
+
+                print("  Reading Merlin's screen...")
+                time.sleep(1.0)
+                app_result = self.interactions.extract_result()
+
+                classification_obj = result_classifier.classify_result(
+                    app_result,
+                    expected_species,
+                )
+                classification = str(classification_obj.get("category"))
+
+                if classification == "correct_species":
+                    status = "PASS"
+                    correct_count += 1
+                else:
+                    status = "FAIL"
+                total_count += 1
+
+                test_id = f"INT_{test_count:03d}"
+                result: dict[str, object] = {
+                    "test_id": test_id,
+                    "image_name": "interactive",
+                    "image_type": "interactive",
+                    "augmentation": "user_selected",
+                    "expected_species": expected_species,
+                    "timestamp": datetime.now().isoformat(),
+                    "status": "passed" if status == "PASS" else "failed",
+                    "app_result": app_result,
+                    "classification": classification_obj,
+                    "screenshot_before": None,
+                    "screenshot_after": None,
+                    "error": None,
+                }
+
+                screenshot_path = f"{TEST_RESULTS_DIR}/screenshot_{test_id}.png"
+                self.driver.take_screenshot(screenshot_path)
+                result["screenshot_after"] = screenshot_path
+
+                results.append(result)
+                self.test_results.append(result)
+                # Persist progress immediately after each identification so users
+                # always get a report even if the session stops right after.
+                self.generate_report(results)
+
+                print()
+                print(f"Expected:        {expected_species}")
+                print(f"Merlin said:     {app_result}")
+                print(f"Classification:  {classification}")
+                print(f"STATUS:          {status}")
+                print(f"  Screenshot:      {screenshot_path}")
+
+                again = input("\n  Run another interactive test? (y/n): ").strip().lower()
+                if again != "y":
                     break
-                if expected_input not in valid_species:
-                    print(f"  WARNING: Unknown species key '{expected_input}'. Try again.")
-                    continue
-                expected_species = expected_input
 
-            print(f"\n--- Interactive Test #{test_count} ---")
-            if expected_species:
-                print(f"Expected species: {expected_species}")
-            else:
-                print("Expected species: not set (observation-only mode)")
-
-            print(f"\n  -> Now go to the emulator. Pick an image of '{expected_species}' in Merlin.")
-            input("  -> Press ENTER here AFTER Merlin has shown the identification result...")
-
-            print("  Reading Merlin's screen...")
-            time.sleep(1.0)
-            app_result = self.interactions.extract_result()
-
-            classification_obj = result_classifier.classify_result(
-                app_result,
-                expected_species,
+                print("  Resetting Merlin to home...")
+                self.interactions.reset_for_next_test()
+                time.sleep(1.5)
+                test_count += 1
+                if initial_expected is None:
+                    expected_species = None
+        except (KeyboardInterrupt, EOFError):
+            print("\nInteractive session interrupted. Returning partial results.")
+            logger.warning(
+                "Interactive mode interrupted after %s captured test(s).",
+                len(results),
             )
-            classification = str(classification_obj.get("category"))
-
-            if classification == "correct_species":
-                status = "PASS"
-                correct_count += 1
-            else:
-                status = "FAIL"
-            total_count += 1
-
-            test_id = f"INT_{test_count:03d}"
-            result: dict[str, object] = {
-                "test_id": test_id,
-                "image_name": "interactive",
-                "image_type": "interactive",
-                "augmentation": "user_selected",
-                "expected_species": expected_species,
-                "timestamp": datetime.now().isoformat(),
-                "status": "passed" if status == "PASS" else "failed",
-                "app_result": app_result,
-                "classification": classification_obj,
-                "screenshot_before": None,
-                "screenshot_after": None,
-                "error": None,
-            }
-
-            screenshot_path = f"{TEST_RESULTS_DIR}/screenshot_{test_id}.png"
-            self.driver.take_screenshot(screenshot_path)
-            result["screenshot_after"] = screenshot_path
-
-            results.append(result)
-            self.test_results.append(result)
-
-            print()
-            print(f"Expected:        {expected_species}")
-            print(f"Merlin said:     {app_result}")
-            print(f"Classification:  {classification}")
-            print(f"STATUS:          {status}")
-            print(f"  Screenshot:      {screenshot_path}")
-
-            again = input("\n  Run another interactive test? (y/n): ").strip().lower()
-            if again != "y":
-                break
-
-            print("  Resetting Merlin to home...")
-            self.interactions.reset_for_next_test()
-            time.sleep(1.5)
-            test_count += 1
-            if initial_expected is None:
-                expected_species = None
 
         accuracy = (correct_count / total_count) * 100 if total_count > 0 else 0
         print(f"\nFinal Accuracy: {accuracy:.2f}%")

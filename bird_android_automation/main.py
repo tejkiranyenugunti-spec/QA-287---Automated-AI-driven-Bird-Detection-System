@@ -151,6 +151,9 @@ def main() -> int:
             sys.exit(1)
         try:
             results = runner.run_interactive_mode(initial_expected=args.expected)
+        except (KeyboardInterrupt, EOFError):
+            logger.warning("Interactive mode interrupted. Writing partial report if available.")
+            results = runner.test_results
         finally:
             if results:
                 runner.generate_report(results)

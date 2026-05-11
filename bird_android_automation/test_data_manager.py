@@ -27,12 +27,25 @@ class TestDataManager:
         return rows
 
     def get_image_path(self, image_name: str, image_type: str) -> Path:
-        """Resolve image path based on image_type."""
+        """Resolve image path based on image_type, falling back across image extensions."""
         if image_type == "original":
-            return Path(ORIGINAL_IMAGES_DIR) / image_name
-        if image_type == "augmented":
-            return Path(AUGMENTED_IMAGES_DIR) / image_name
-        raise ValueError(f"Unsupported image_type: {image_type}")
+            base_dir = Path(ORIGINAL_IMAGES_DIR)
+        elif image_type == "augmented":
+            base_dir = Path(AUGMENTED_IMAGES_DIR)
+        else:
+            raise ValueError(f"Unsupported image_type: {image_type}")
+
+        exact = base_dir / image_name
+        if exact.exists():
+            return exact
+
+        stem = Path(image_name).stem
+        for ext in (".png", ".jpg", ".jpeg", ".PNG", ".JPG", ".JPEG"):
+            candidate = base_dir / f"{stem}{ext}"
+            if candidate.exists():
+                return candidate
+
+        return exact
 
     def list_available_images(self, image_type: str = "both") -> list[str]:
         """List available image filenames from originals and/or augmented directories."""
